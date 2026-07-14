@@ -39,7 +39,7 @@
     },
     "dependencies": {
         "@fiduswriter/document": "^0.2.20",
-        "@fiduswriter/editor": "^0.1.13",
+        "@fiduswriter/editor": "^0.1.17",
         "citeproc-plus": "^1.0.2",
         "downloadjs": "^1.4.7",
         "fast-deep-equal": "^3.1.3",
