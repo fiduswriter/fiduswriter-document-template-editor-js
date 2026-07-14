@@ -2,7 +2,7 @@ import {MAX_FW_DOCUMENT_VERSION, MIN_FW_DOCUMENT_VERSION} from "@fiduswriter/doc
 import {FW_DOCUMENT_VERSION} from "@fiduswriter/document/schema/index"
 import {escapeText, gettext, postJson} from "fwtoolkit"
 
-import {updateTemplateFile} from "./update"
+import {updateTemplateFile} from "./update.js"
 
 const TEXT_FILENAMES = [
     "mimetype",

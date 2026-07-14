@@ -1,6 +1,6 @@
 import {CSL} from "citeproc-plus"
 import {ensureCSS, escapeText, findTarget, gettext, postJson, staticUrl, whenReady} from "fwtoolkit"
-import {DocumentTemplateDesigner} from "./designer"
+import {DocumentTemplateDesigner} from "./designer.js"
 
 export class DocumentTemplateAdmin {
     constructor() {

@@ -16,8 +16,8 @@ import {
     TagsPartView
 } from "@fiduswriter/editor/state_plugins/index"
 import {ensureCSS, findTarget, gettext, staticUrl} from "fwtoolkit"
-import {DocumentStyleDialog} from "./document_style_dialog"
-import {ExportTemplateDialog} from "./export_template_dialog"
+import {DocumentStyleDialog} from "./document_style_dialog.js"
+import {ExportTemplateDialog} from "./export_template_dialog.js"
 import {
     contributorsPartSchema,
     headingMenuContent,
@@ -29,7 +29,7 @@ import {
     tableMenuContent,
     tablePartSchema,
     tagsPartSchema
-} from "./schema"
+} from "./schema.js"
 import {
     bibliographyHeaderTemplate,
     citationstyleTemplate,
@@ -38,8 +38,8 @@ import {
     exportTemplatesTemplate,
     idTypesTemplate,
     languageTemplate
-} from "./templates"
-import {addHeadingIds, debounced, noTrack} from "./tools"
+} from "./templates.js"
+import {addHeadingIds, debounced, noTrack} from "./tools.js"
 
 export class DocumentTemplateDesigner {
     constructor(

@@ -1,6 +1,6 @@
 import {ensureCSS, escapeText, findTarget, gettext, staticUrl, whenReady} from "fwtoolkit"
-import {DocumentTemplateExporter} from "./exporter"
-import {DocumentTemplateImporter} from "./importer"
+import {DocumentTemplateExporter} from "./exporter.js"
+import {DocumentTemplateImporter} from "./importer.js"
 
 export class DocumentTemplateListAdmin {
     constructor(settings) {
