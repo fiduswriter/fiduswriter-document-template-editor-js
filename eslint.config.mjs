@@ -6,13 +6,10 @@ export default tseslint.config(
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: ["src/**/*.ts"],
+    files: ["src/**/*.ts", "test/**/*.ts", "test/**/*.js"],
     languageOptions: {
-      ecmaVersion: 2022,
+      ecmaVersion: 2020,
       sourceType: "module",
-      globals: {
-        ...globals.browser,
-      },
     },
     rules: {
       "@typescript-eslint/no-explicit-any": "off",
@@ -36,6 +33,15 @@ export default tseslint.config(
       "prefer-const": "off",
       semi: "off",
       "@typescript-eslint/semi": "off",
+    },
+  },
+  {
+    files: ["test/**/*.js", "scripts/**/*.js"],
+    languageOptions: {
+      globals: {
+        ...globals.node,
+        ...globals.browser,
+      },
     },
   },
   {

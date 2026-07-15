@@ -1,19 +1,61 @@
-# @fiduswriter/document-template-editor
+<p align="center">
+  <img src="logo.svg" alt="@fiduswriter/document-template-editor" width="100" height="100">
+</p>
 
-Fidus Writer document template editor.
+<h1 align="center">@fiduswriter/document-template-editor</h1>
 
-This package implements the browser-based document template designer and admin
-tools used by Fidus Writer, including template import/export and document
-adjustment to template changes.
+<p align="center">Document template designer and editor for Fidus Writer</p>
 
-## Build
+---
+
+## What it does
+
+Provides the full document template editing system for Fidus Writer. Includes
+a visual template designer, template extraction from existing documents,
+adjustment of documents to conform to templates, and template import/export.
+
+## Exports
+
+| Export                        | Description                                                 |
+| ----------------------------- | ----------------------------------------------------------- |
+| `DocumentTemplateDesigner`    | Visual designer for creating and editing document templates |
+| `extractTemplate`             | Extract a template from an existing Fidus Writer document   |
+| `adjustDocToTemplate`         | Adjust a document's content to conform to a target template |
+| `DocumentTemplateExporter`    | Export templates to `.fidustemplate` format                 |
+| `DocumentTemplateImporter`    | Import templates from `.fidustemplate` format               |
+| `DocumentTemplateAdmin`       | Admin UI for managing individual document templates         |
+| `DocumentTemplateListAdmin`   | Admin UI for listing all document templates                 |
+| `updateTemplateFile`          | Update an existing template file                            |
+| `helpSchema`, `serializeHelp` | Schema definition and serializer for template help text     |
+
+## Installation
 
 ```bash
-npm install
-npm run build
+npm install @fiduswriter/document-template-editor
 ```
 
-## Status
+## Usage
 
-This is an initial extraction from the main Fidus Writer Django app. The code is
-still JavaScript and will be migrated to TypeScript over time.
+```ts
+import {
+  DocumentTemplateDesigner,
+  extractTemplate,
+  adjustDocToTemplate,
+  DocumentTemplateExporter,
+  DocumentTemplateImporter,
+} from "@fiduswriter/document-template-editor";
+```
+
+## Development
+
+```bash
+npm install          # Install dependencies
+npm run build        # Compile TypeScript to dist/
+npm run typecheck    # Check types without emitting
+npm run lint         # Lint with ESLint
+npm run format:check # Check formatting with Prettier
+```
+
+## License
+
+AGPL-3.0 — see [LICENSE](LICENSE) for details.
