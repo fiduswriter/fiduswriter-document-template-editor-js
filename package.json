@@ -39,8 +39,7 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config jest.config.js"
   },
   "dependencies": {
-    "@fiduswriter/common": "^0.1.4",
-    "@fiduswriter/document": "^0.2.20",
+    "@fiduswriter/document": "^0.2.25",
     "citeproc-plus": "^1.0.2",
     "downloadjs": "^1.4.7",
     "fast-deep-equal": "^3.1.3",

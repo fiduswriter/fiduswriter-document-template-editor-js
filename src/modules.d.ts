@@ -48,7 +48,7 @@ declare module "downloadjs" {
   export default download;
 }
 
-declare module "@fiduswriter/common/state_plugins" {
+declare module "@fiduswriter/document/state_plugins" {
   import type { Node } from "prosemirror-model";
   import type { EditorView, NodeView } from "prosemirror-view";
 

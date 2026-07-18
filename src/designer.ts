@@ -15,7 +15,7 @@ import { toFullJSON, toMiniJSON } from "@fiduswriter/document/schema/mini_json";
 import {
   ContributorsPartView,
   TagsPartView,
-} from "@fiduswriter/common/state_plugins";
+} from "@fiduswriter/document/state_plugins";
 import { ensureCSS, findTarget, gettext, staticUrl } from "fwtoolkit";
 
 import { DocumentStyleDialog } from "./document_style_dialog.js";

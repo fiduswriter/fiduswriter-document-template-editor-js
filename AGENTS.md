@@ -77,5 +77,4 @@ npm run format:check # Check formatting with Prettier
 ## Consumers
 
 - `fiduswriter/` (the main Fidus Writer Django app).
-- `@fiduswriter/common` for shared page chrome.
 - `@fiduswriter/document` for the document model.
