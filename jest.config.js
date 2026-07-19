@@ -60,8 +60,6 @@ export default {
     "^diff$": "<rootDir>/test/mocks/diff.js",
     "^fast-xml-parser$": "<rootDir>/test/mocks/fast-xml-parser.js",
     "^jszip$": "<rootDir>/test/mocks/jszip.js",
-    "^citeproc-plus$": "<rootDir>/test/mocks/citeproc-plus.js",
-    "^citeproc-plus/.*": "<rootDir>/test/mocks/citeproc-plus.js",
     "^@fiduswriter/document$": "<rootDir>/test/mocks/document.js",
     "^@fiduswriter/document/.*": "<rootDir>/test/mocks/document.js",
     "^@fiduswriter/bibliography-manager$":
