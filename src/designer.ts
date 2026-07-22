@@ -45,6 +45,7 @@ import { addHeadingIds, debounced, noTrack } from "./tools.js";
 import type {
   CitationStyleMap,
   DocumentStyle,
+  DocumentTemplateApi,
   DocumentTemplateValue,
   ExportTemplate,
   TemplateCurrentValue,
@@ -59,6 +60,7 @@ export class DocumentTemplateDesigner {
   citationStyles: CitationStyleMap;
   exportTemplates: ExportTemplate[];
   dom: HTMLElement;
+  documentTemplateApi: DocumentTemplateApi;
 
   editors: Array<[HTMLElement, EditorView]>;
   listeners: { onScroll: () => void };
@@ -71,6 +73,7 @@ export class DocumentTemplateDesigner {
     citationStyles: CitationStyleMap,
     exportTemplates: ExportTemplate[],
     dom: HTMLElement,
+    documentTemplateApi: DocumentTemplateApi,
   ) {
     ensureCSS(staticUrl("css/input_list.css"));
     this.id = id;
@@ -83,6 +86,7 @@ export class DocumentTemplateDesigner {
     this.citationStyles = citationStyles;
     this.exportTemplates = exportTemplates;
     this.dom = dom;
+    this.documentTemplateApi = documentTemplateApi;
 
     this.editors = [];
     this.listeners = {
@@ -750,6 +754,7 @@ export class DocumentTemplateDesigner {
                 documentStylesTemplate({
                   documentStyles: this.documentStyles,
                 })),
+            this.documentTemplateApi,
           );
           dialog.init();
           break;
@@ -773,6 +778,7 @@ export class DocumentTemplateDesigner {
                     exportTemplates: this.exportTemplates,
                   })),
               value as unknown as DocumentTemplateValue,
+              this.documentTemplateApi,
             );
             dialog.init();
           }

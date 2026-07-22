@@ -65,14 +65,37 @@ Do **not** put in this repository:
 
 ## Build and test commands
 
+This package uses `pnpm`. Do not use `npm install`; it will create a
+`package-lock.json` that is not tracked.
+
 ```bash
-npm install          # Install dependencies
-npm run build        # Compile TypeScript to dist/
-npm run typecheck    # Check types without emitting
-npm test             # Run test suite
-npm run lint         # Lint with ESLint
-npm run format:check # Check formatting with Prettier
+pnpm install          # Install dependencies
+pnpm run build        # Compile TypeScript to dist/
+pnpm run typecheck    # Check types without emitting
+pnpm test             # Run test suite
+pnpm run lint         # Lint with ESLint
+pnpm run format:check # Check formatting with Prettier
 ```
+
+## Backend communication
+
+The package must remain backend-agnostic. It does **not** contain any
+hard-coded `/api/...` URLs. All server communication goes through the
+injected `DocumentTemplateApi` connector defined in `src/types.ts`.
+
+The host app (e.g. `fiduswriter/`) creates an implementation of this
+interface and passes it to the admin/dialog/exporter/importer classes.
+The Django implementation lives in
+`fiduswriter/fiduswriter/base/static/js/modules/api_adapters/index.js`.
+
+When adding a new backend operation:
+
+1. Add the method signature to `DocumentTemplateApi` in `src/types.ts` with
+   a concrete response type (extend `src/types.ts` rather than using
+   `Promise<unknown>`).
+2. Implement the method in the host app's adapter.
+3. Call it through the injected connector; never import `postJson`/`getJson`
+   for Django-specific endpoints in this package.
 
 ## Consumers
 

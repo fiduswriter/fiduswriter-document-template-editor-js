@@ -7,17 +7,23 @@ import {
   whenReady,
 } from "fwtoolkit";
 
+import type { DocumentTemplateApi } from "./types.js";
 import { DocumentTemplateExporter } from "./exporter.js";
 import { DocumentTemplateImporter } from "./importer.js";
 
 export class DocumentTemplateListAdmin {
   settings: Record<string, unknown>;
+  documentTemplateApi: DocumentTemplateApi;
   objectTools: HTMLElement | false;
   actionDropdown: HTMLSelectElement | false;
   templateDesignerBlock!: HTMLElement;
 
-  constructor(settings: Record<string, unknown>) {
+  constructor(
+    settings: Record<string, unknown>,
+    documentTemplateApi: DocumentTemplateApi,
+  ) {
     this.settings = settings;
+    this.documentTemplateApi = documentTemplateApi;
     this.objectTools = false;
     this.actionDropdown = false;
   }
@@ -98,7 +104,10 @@ export class DocumentTemplateListAdmin {
             );
             Promise.all(
               files.map((file) => {
-                const importer = new DocumentTemplateImporter(file);
+                const importer = new DocumentTemplateImporter(
+                  file,
+                  this.documentTemplateApi,
+                );
                 return importer.init();
               }),
             ).then(() => window.location.reload());
@@ -114,7 +123,10 @@ export class DocumentTemplateListAdmin {
               ),
             ).map((el) => Number.parseInt((el as HTMLInputElement).value));
             ids.forEach((id) => {
-              const exporter = new DocumentTemplateExporter(id);
+              const exporter = new DocumentTemplateExporter(
+                id,
+                this.documentTemplateApi,
+              );
               exporter.init();
             });
           }

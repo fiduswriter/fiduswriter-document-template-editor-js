@@ -1,10 +1,10 @@
-import { Dialog, escapeText, findTarget, gettext, postJson } from "fwtoolkit";
+import { Dialog, escapeText, findTarget, gettext } from "fwtoolkit";
 
-import type { DocumentStyle } from "./types.js";
-
-interface SaveResponse {
-  doc_style: DocumentStyle[];
-}
+import type {
+  DocumentStyle,
+  DocumentTemplateApi,
+  SaveDocumentStyleResponse,
+} from "./types.js";
 
 export class DocumentStyleDialog {
   id: number;
@@ -12,6 +12,7 @@ export class DocumentStyleDialog {
   documentTemplateId: number;
   allStyles: DocumentStyle[];
   refresh: () => void;
+  documentTemplateApi: DocumentTemplateApi;
 
   addedFiles: File[];
   deletedFiles: string[];
@@ -23,12 +24,14 @@ export class DocumentStyleDialog {
     documentTemplateId: number,
     allStyles: DocumentStyle[],
     refresh: () => void,
+    documentTemplateApi: DocumentTemplateApi,
   ) {
     this.id = id;
     this.style = style;
     this.documentTemplateId = documentTemplateId;
     this.allStyles = allStyles;
     this.refresh = refresh;
+    this.documentTemplateApi = documentTemplateApi;
 
     this.addedFiles = [];
     this.deletedFiles = [];
@@ -46,8 +49,8 @@ export class DocumentStyleDialog {
             return;
           }
           this.save({ title, slug, contents })
-            .then(({ json }) => {
-              const docStyle = (json as SaveResponse).doc_style[0];
+            .then((json: SaveDocumentStyleResponse) => {
+              const docStyle = json.doc_style[0];
               const pk = docStyle.pk;
               const oldStyleIndex = this.allStyles.findIndex(
                 (style) => style.pk === pk,
@@ -150,7 +153,8 @@ export class DocumentStyleDialog {
   }
 
   deleteStyle() {
-    postJson("/api/style/delete_document_style/", { id: this.id })
+    this.documentTemplateApi
+      .deleteDocumentStyle(this.id)
       .then(() => {
         const oldStyleIndex = this.allStyles.findIndex(
           (style) => style.pk === this.id,
@@ -249,8 +253,7 @@ export class DocumentStyleDialog {
     slug: string;
     contents: string;
   }) {
-    return postJson(
-      "/api/style/save_document_style/",
+    return this.documentTemplateApi.saveDocumentStyle(
       {
         id: this.id,
         title,

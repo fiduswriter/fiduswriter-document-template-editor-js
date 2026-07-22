@@ -134,5 +134,71 @@ export interface TemplateDefinition {
   documentStyles: DocumentStyle[];
 }
 
+/** Extra template data returned by the server for the change-admin page. */
+export interface TemplateExtras {
+  document_styles?: DocumentStyle[];
+  export_templates?: ExportTemplate[];
+}
+
+/** Raw export-template data as returned by {@link DocumentTemplateApi.getTemplate}. */
+export interface TemplateExportResponse {
+  doc_version: string;
+  title: string;
+  content: Record<string, unknown>;
+  export_templates: ExportTemplate[];
+  document_styles: DocumentStyle[];
+}
+
+/** Response from saving a document style. */
+export interface SaveDocumentStyleResponse {
+  doc_style: DocumentStyle[];
+}
+
+/** Response from saving an export template. */
+export interface SaveExportTemplateResponse {
+  export_template: ExportTemplate[];
+}
+
+/** API connector for document-template-editor server operations. */
+export interface DocumentTemplateApi {
+  list(): Promise<Record<string, unknown>>;
+  get(data: { id: number; token?: string }): Promise<Record<string, unknown>>;
+  save(data: Record<string, unknown>): Promise<unknown>;
+  delete(data: { id: number }): Promise<Record<string, unknown>>;
+  create(
+    data: Record<string, unknown>,
+    files?: Record<string, unknown>,
+  ): Promise<unknown>;
+  copy(data: { id: number; title: string }): Promise<Record<string, unknown>>;
+  getTemplate(id: number, token?: string): Promise<TemplateExportResponse>;
+  createTemplate(
+    data: Record<string, unknown>,
+    files?: Record<string, unknown>,
+  ): Promise<ImportedTemplate>;
+  saveExportTemplate(
+    data: Record<string, unknown>,
+    files?: Record<string, unknown>,
+  ): Promise<SaveExportTemplateResponse>;
+  deleteExportTemplate(id: number): Promise<Record<string, unknown>>;
+  saveDocumentStyle(
+    data: Record<string, unknown>,
+    files?: Record<string, unknown>,
+  ): Promise<SaveDocumentStyleResponse>;
+  deleteDocumentStyle(id: number): Promise<Record<string, unknown>>;
+  importDocumentStyle(
+    data: Record<string, unknown>,
+    files?: Record<string, unknown>,
+  ): Promise<Record<string, unknown>>;
+  getTemplateExtras(data: { id: number }): Promise<TemplateExtras>;
+}
+
+/** Subset of the host app object used by document-template-editor code. */
+export interface DocumentTemplateEditorApp {
+  settings: Record<string, JSONValue>;
+  apiConnectors: {
+    documentTemplate: DocumentTemplateApi;
+  };
+}
+
 /** Options accepted by the {@link DocumentTemplateListAdmin} constructor. */
 export type ListAdminSettings = Record<string, JSONValue>;

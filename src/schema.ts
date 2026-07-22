@@ -45,7 +45,7 @@ const findTable = (state: EditorState) => {
   return false;
 };
 
-export const helpSchema = new Schema({
+export const helpSchema: Schema = new Schema({
   nodes: schema.spec.nodes
     .remove("code_block")
     .remove("image")
@@ -87,7 +87,7 @@ export const serializeHelp = (content: unknown[]) => {
   return dom.innerHTML;
 };
 
-export const richtextPartSchema = new Schema({
+export const richtextPartSchema: Schema = new Schema({
   nodes: docSchema.spec.nodes.update("doc", { content: "richtext_part" }),
   marks: docSchema.spec.marks,
 });
@@ -145,7 +145,7 @@ const type = richtextPartSchema.nodes["table"]!;
   }),
 );
 
-export const tablePartSchema = new Schema({
+export const tablePartSchema: Schema = new Schema({
   nodes: docSchema.spec.nodes
     .update("doc", { content: "table_part" })
     .update("table_row", {
@@ -212,7 +212,7 @@ richtextMenuContent.splice(2, 0, [
   new Dropdown(tableMenu, { label: gettext("Table") }),
 ]);
 
-export const headingPartSchema = new Schema({
+export const headingPartSchema: Schema = new Schema({
   nodes: docSchema.spec.nodes
     .update("doc", { content: "heading_part" })
     .remove("horizontal_rule")
@@ -234,7 +234,7 @@ for (let i = 1; i <= 6; i++) {
   );
 }
 
-export const tagsPartSchema = new Schema({
+export const tagsPartSchema: Schema = new Schema({
   nodes: {
     doc: { content: "tags_part" },
     tags_part: docSchema.spec.nodes.get("tags_part")!,
@@ -244,7 +244,7 @@ export const tagsPartSchema = new Schema({
   marks: docSchema.spec.marks,
 });
 
-export const contributorsPartSchema = new Schema({
+export const contributorsPartSchema: Schema = new Schema({
   nodes: {
     doc: { content: "contributors_part" },
     contributors_part: docSchema.spec.nodes.get("contributors_part")!,

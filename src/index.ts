@@ -7,3 +7,7 @@ export { DocumentTemplateImporter } from "./importer.js";
 export { DocumentTemplateAdmin } from "./change_admin.js";
 export { DocumentTemplateListAdmin } from "./list_admin.js";
 export { updateTemplateFile } from "./update.js";
+export type {
+  DocumentTemplateApi,
+  DocumentTemplateEditorApp,
+} from "./types.js";

@@ -3,10 +3,15 @@ import {
   MIN_FW_DOCUMENT_VERSION,
 } from "@fiduswriter/document/importer/native";
 import { FW_DOCUMENT_VERSION } from "@fiduswriter/document/schema/index";
-import { escapeText, gettext, postJson } from "fwtoolkit";
+import { escapeText, gettext } from "fwtoolkit";
 
 import { updateTemplateFile } from "./update.js";
-import type { BinaryTemplateFile, TextTemplateFile } from "./types.js";
+import type {
+  BinaryTemplateFile,
+  DocumentTemplateApi,
+  ImportedTemplate,
+  TextTemplateFile,
+} from "./types.js";
 
 const TEXT_FILENAMES = [
   "mimetype",
@@ -18,7 +23,7 @@ const TEXT_FILENAMES = [
 
 export class DocumentTemplateImporter {
   file: File;
-  createUrl: string;
+  documentTemplateApi: DocumentTemplateApi;
 
   textFiles: TextTemplateFile[];
   otherFiles: BinaryTemplateFile[];
@@ -27,9 +32,9 @@ export class DocumentTemplateImporter {
   docTemplate:
     { id: number; title: string; added: number; updated: number } | false;
 
-  constructor(file: File, createUrl = "/api/document/admin/create_template/") {
+  constructor(file: File, documentTemplateApi: DocumentTemplateApi) {
     this.file = file;
-    this.createUrl = createUrl;
+    this.documentTemplateApi = documentTemplateApi;
 
     this.textFiles = [];
     this.otherFiles = [];
@@ -153,37 +158,32 @@ export class DocumentTemplateImporter {
           ),
           filetypeVersion,
         );
-      return postJson(
-        this.createUrl,
-        {
-          title,
-          content,
-          import_id: content.attrs!.import_id,
-          export_templates: exportTemplates,
-          document_styles: documentStyles,
-        },
-        {
-          files: this.otherFiles.map(
-            ({ filename, content }) => new File([content], filename),
-          ),
-        },
-      ).then(({ json }) => {
-        const data = json as {
-          id: number;
-          title: string;
-          added: number;
-          updated: number;
-        };
-        this.ok = true;
-        this.docTemplate = {
-          id: data.id,
-          title: data.title,
-          added: data.added,
-          updated: data.updated,
-        };
-        this.statusText = `${escapeText(title)} ${gettext("successfully imported.")}`;
-        return this;
-      });
+      return this.documentTemplateApi
+        .createTemplate(
+          {
+            title,
+            content,
+            import_id: content.attrs!.import_id,
+            export_templates: exportTemplates,
+            document_styles: documentStyles,
+          },
+          {
+            files: this.otherFiles.map(
+              ({ filename, content }) => new File([content], filename),
+            ),
+          },
+        )
+        .then((json: ImportedTemplate) => {
+          this.ok = true;
+          this.docTemplate = {
+            id: json.id,
+            title: json.title,
+            added: json.added,
+            updated: json.updated,
+          };
+          this.statusText = `${escapeText(title)} ${gettext("successfully imported.")}`;
+          return this;
+        });
     } else {
       // The file is not a Fidus Writer file.
       this.statusText =

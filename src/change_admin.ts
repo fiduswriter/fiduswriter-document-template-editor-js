@@ -4,18 +4,17 @@ import {
   escapeText,
   findTarget,
   gettext,
-  postJson,
   staticUrl,
   whenReady,
 } from "fwtoolkit";
 
 import { DocumentTemplateDesigner } from "./designer.js";
-import type { DocumentStyle, ExportTemplate } from "./types.js";
-
-interface TemplateExtras {
-  document_styles?: DocumentStyle[];
-  export_templates?: ExportTemplate[];
-}
+import type {
+  DocumentStyle,
+  DocumentTemplateApi,
+  ExportTemplate,
+  TemplateExtras,
+} from "./types.js";
 
 export class DocumentTemplateAdmin {
   objectTools: HTMLElement | false;
@@ -30,13 +29,15 @@ export class DocumentTemplateAdmin {
   contentImportIdBlock!: HTMLElement;
   contentBlock!: HTMLElement;
   templateDesignerBlock!: HTMLElement;
+  documentTemplateApi: DocumentTemplateApi;
 
-  constructor() {
+  constructor(documentTemplateApi: DocumentTemplateApi) {
     this.objectTools = false;
     this.contentTextarea = false;
     this.templateDesigner = false;
     this.templateExtras = false;
     this.citationStyles = false;
+    this.documentTemplateApi = documentTemplateApi;
     const locationParts = window.location.href.split("/");
     let id = Number.parseInt(locationParts[locationParts.length - 3]);
     if (isNaN(id)) {
@@ -66,9 +67,9 @@ export class DocumentTemplateAdmin {
     ];
     if (this.id) {
       initialTasks.push(
-        postJson("/api/document/admin/get_template/extras/", {
-          id: this.id,
-        }).then(({ json }) => (this.templateExtras = json as TemplateExtras)),
+        this.documentTemplateApi
+          .getTemplateExtras({ id: this.id })
+          .then((json) => (this.templateExtras = json)),
       );
     }
 
@@ -121,6 +122,7 @@ export class DocumentTemplateAdmin {
       ((this.templateExtras as TemplateExtras).export_templates ||
         []) as ExportTemplate[],
       document.getElementById("template-editor") as HTMLElement,
+      this.documentTemplateApi,
     );
     this.templateDesigner.init();
   }

@@ -5,15 +5,15 @@ import {
   gettext,
   get,
   interpolate,
-  postJson,
 } from "fwtoolkit";
 import JSZip from "jszip";
 
-import type { DocumentTemplateValue, ExportTemplate } from "./types.js";
-
-interface SaveResponse {
-  export_template: ExportTemplate[];
-}
+import type {
+  DocumentTemplateApi,
+  DocumentTemplateValue,
+  ExportTemplate,
+  SaveExportTemplateResponse,
+} from "./types.js";
 
 export class ExportTemplateDialog {
   id: number;
@@ -22,6 +22,7 @@ export class ExportTemplateDialog {
   allTemplates: ExportTemplate[];
   refresh: () => void;
   documentTemplateValue: DocumentTemplateValue;
+  documentTemplateApi: DocumentTemplateApi;
   addedFile: File | false;
   addedFileType: string | false;
   dialog!: Dialog;
@@ -33,6 +34,7 @@ export class ExportTemplateDialog {
     allTemplates: ExportTemplate[],
     refresh: () => void,
     documentTemplateValue: DocumentTemplateValue,
+    documentTemplateApi: DocumentTemplateApi,
   ) {
     this.id = id;
     this.template = template;
@@ -40,6 +42,7 @@ export class ExportTemplateDialog {
     this.allTemplates = allTemplates;
     this.refresh = refresh;
     this.documentTemplateValue = documentTemplateValue;
+    this.documentTemplateApi = documentTemplateApi;
     this.addedFile = false;
     this.addedFileType = false;
   }
@@ -56,8 +59,8 @@ export class ExportTemplateDialog {
             return;
           }
           this.save()
-            .then(({ json }) => {
-              const exportTemplate = (json as SaveResponse).export_template[0];
+            .then((json: SaveExportTemplateResponse) => {
+              const exportTemplate = json.export_template[0];
               const pk = exportTemplate.pk;
               const oldTemplateIndex = this.allTemplates.findIndex(
                 (template) => template.pk === pk,
@@ -164,7 +167,8 @@ export class ExportTemplateDialog {
   }
 
   deleteTemplate() {
-    postJson("/api/style/delete_export_template/", { id: this.id })
+    this.documentTemplateApi
+      .deleteExportTemplate(this.id)
       .then(() => {
         const oldTemplateIndex = this.allTemplates.findIndex(
           (style) => style.pk === this.id,
@@ -250,7 +254,7 @@ export class ExportTemplateDialog {
       template_id: this.documentTemplateId,
       added_file_type: this.addedFileType,
     };
-    return postJson("/api/style/save_export_template/", jsonData, {
+    return this.documentTemplateApi.saveExportTemplate(jsonData, {
       added_file: this.addedFile as File,
     });
   }
